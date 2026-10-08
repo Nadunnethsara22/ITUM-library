@@ -1,79 +1,198 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Library Digital Resources</title>
-<script src="./vendor/react.js"></script>
-<script src="./vendor/react-dom.js"></script>
-<script src="./support.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ITUM Digital Library | Your library, on your phone</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@500;700;800&family=Source+Sans+3:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{--maroon:#5c1a2e;--maroon-d:#3d0f1e;--gold:#f0b429;--ink:#1d1a1c;--mist:#f3f5f9;--line:#dfe3ec;--white:#fff;
+--head:"Bricolage Grotesque",system-ui,sans-serif;--body:"Source Sans 3",system-ui,sans-serif}
+*{box-sizing:border-box;margin:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--body);color:var(--ink);background:var(--white);line-height:1.6;font-size:1.05rem}
+h1,h2,h3{font-family:var(--head);line-height:1.1;letter-spacing:-.01em}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+.wrap{max-width:1080px;margin:0 auto;padding:0 1.25rem}
+header{background:var(--maroon-d);color:var(--white)}
+header .wrap{display:flex;align-items:center;justify-content:space-between;padding:.9rem 1.25rem}
+.brand{display:flex;align-items:center;gap:.7rem;font-family:var(--head);font-weight:700;text-decoration:none}
+.brand small{display:block;font-family:var(--body);font-weight:400;font-size:.78rem;opacity:.8}
+nav a{margin-left:1.2rem;text-decoration:none;font-size:.95rem;opacity:.9}
+nav a:hover{opacity:1;text-decoration:underline}
+.hero{background:var(--maroon);color:var(--white);overflow:hidden}
+.hero .wrap{display:grid;grid-template-columns:1.1fr .9fr;gap:2rem;align-items:center;padding-top:3.5rem;padding-bottom:3.5rem}
+.hero h1{font-size:clamp(2.3rem,5.4vw,4rem);font-weight:800}
+.hero p{margin:1.2rem 0 1.8rem;max-width:34rem;font-size:1.15rem;opacity:.92}
+.btn{display:inline-block;background:var(--gold);color:var(--maroon-d);font-family:var(--head);font-weight:700;padding:.95rem 1.6rem;border-radius:999px;text-decoration:none;border:0;font-size:1.05rem;cursor:pointer;transition:transform .15s}
+.btn:hover{transform:translateY(-2px)}
+.ghost{margin-left:.8rem;color:var(--white);text-decoration:underline;font-weight:600}
+.hero svg{width:100%;height:auto;display:block}
+.float{animation:bob 5s ease-in-out infinite;transform-origin:center}
+@keyframes bob{50%{transform:translateY(-10px)}}
+.stats{background:var(--gold);color:var(--maroon-d)}
+.stats ul{list-style:none;padding:0;display:grid;grid-template-columns:repeat(4,1fr);text-align:center}
+.stats li{padding:1.1rem .5rem;font-size:.95rem}
+.stats b{display:block;font-family:var(--head);font-size:1.7rem}
+section{padding:4rem 0}
+h2{font-size:clamp(1.7rem,3.4vw,2.4rem);margin-bottom:.6rem}
+.lead{max-width:38rem;color:#4a4650;margin-bottom:2rem}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1.2rem}
+.card{background:var(--mist);border-radius:14px;padding:1.5rem}
+.card svg{width:44px;height:44px;margin-bottom:.8rem}
+.card h3{font-size:1.2rem;margin-bottom:.35rem}
+.card p{font-size:.97rem;color:#4a4650}
+.steps{background:var(--mist)}
+.steps ol{list-style:none;padding:0;display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;counter-reset:s}
+.steps li{counter-increment:s;background:var(--white);border-left:5px solid var(--maroon);padding:1.3rem 1.4rem;border-radius:0 12px 12px 0}
+.steps li::before{content:"Step " counter(s);display:block;font-family:var(--head);font-weight:700;color:var(--maroon);margin-bottom:.3rem}
+.steps h3{font-size:1.15rem;margin-bottom:.3rem}
+.orient .wrap{display:grid;grid-template-columns:.9fr 1.1fr;gap:2.5rem;align-items:center}
+.orient svg{width:100%;height:auto}
+form{display:grid;gap:.8rem;max-width:26rem;margin-top:1.3rem}
+label{font-weight:600;font-size:.95rem}
+input,select{width:100%;padding:.8rem 1rem;border:1.5px solid var(--line);border-radius:10px;font:inherit;background:var(--white)}
+input:focus,select:focus{border-color:var(--maroon)}
+#ok{display:none;background:#e7f6ec;border:1.5px solid #8fd1a6;color:#14532d;padding:1rem;border-radius:10px;margin-top:1rem;max-width:26rem}
+.note{font-size:.88rem;color:#6b6772;margin-top:.6rem}
+footer{background:var(--maroon-d);color:var(--white);padding:2.5rem 0;font-size:.95rem}
+footer .wrap{display:flex;flex-wrap:wrap;gap:1.5rem;justify-content:space-between}
+footer p{opacity:.85}
+@media(max-width:820px){
+.hero .wrap,.orient .wrap{grid-template-columns:1fr}
+.steps ol{grid-template-columns:1fr}
+.stats ul{grid-template-columns:repeat(2,1fr)}
+nav{display:none}
+}
+@media(prefers-reduced-motion:reduce){.float{animation:none}html{scroll-behavior:auto}.btn{transition:none}}
+</style>
 </head>
 <body>
-<x-dc>
-<helmet>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&amp;family=DM+Sans:wght@400;500;700&amp;display=swap">
-<style>
-body{margin:0}
-a:hover{opacity:.9}
-</style>
-</helmet>
-<div style="box-sizing: border-box; width: 100%; background: #F6F3EC; color: #5C1A24; font-family: 'DM Sans', sans-serif">
-<div style="background: #5C1A24; color: #F6F3EC">
-<div style="max-width: 1200px; margin: 0 auto; padding: 24px 32px; display: flex; flex-wrap: wrap; gap: 16px; justify-content: space-between; align-items: center">
-<div style="font-size: 20px; font-weight: 700; letter-spacing: 3px; text-transform: uppercase">ITUM Library</div>
-<a href="#resources" style="color: #E8B93B; font-weight: 700; text-decoration: none; padding: 12px 0">Browse resources</a>
+
+<header>
+<div class="wrap">
+<a class="brand" href="#top" aria-label="ITUM Library home">
+<svg width="38" height="38" viewBox="0 0 40 40" aria-hidden="true"><circle cx="20" cy="20" r="19" fill="#f0b429"/><path d="M9 27V13c4-1.5 8-1 11 1.5 3-2.500 7-3 11-1.500v14c-4-1.500-8-1-11 1.500-3-2.500-7-3-11-1.500z" fill="#3d0f1e"/><path d="M20 14.500v13" stroke="#f0b429" stroke-width="1.500"/></svg>
+<span>ITUM Library<small>University of Moratuwa</small></span>
+</a>
+<nav><a href="#resources">Resources</a><a href="#start">How to start</a><a href="#orientation">Orientation</a><a href="#contact">Contact</a></nav>
 </div>
-<div style="max-width: 1200px; margin: 0 auto; padding: 48px 32px 80px; display: flex; flex-wrap: wrap; gap: 48px; align-items: center">
-<div style="flex: 1 1 420px; display: flex; flex-direction: column; gap: 24px">
-<h1 style="margin: 0; font-family: 'DM Serif Display', serif; font-weight: 400; font-size: 64px; line-height: 1.05">Your library never closes. <span style="color: #E8B93B">Study anywhere.</span></h1>
-<p style="margin: 0; font-size: 22px; line-height: 1.5; color: #EBD9DC">Our new digital resources are live: e-books, research journals and databases, free for every ITUM student, in every division, 24/7.</p>
-<a href="https://itum.mrt.ac.lk/library" style="align-self: flex-start; background: #E8B93B; color: #5C1A24; font-size: 20px; font-weight: 700; padding: 18px 32px; border-radius: 12px; text-decoration: none">Log in with your student ID</a>
+</header>
+
+<main id="top">
+<div class="hero">
+<div class="wrap">
+<div>
+<h1>Exam week hack: your library now fits in your pocket</h1>
+<p>Read e-books, download e-journals and open past papers from the hostel, the bus or the canteen. Free for every ITUM student, 24 hours a day.</p>
+<a class="btn" href="#start">Explore the Digital Library</a>
+<a class="ghost" href="#orientation">Join a 15-minute orientation</a>
 </div>
-<div style="flex: 1 1 360px; min-height: 380px; border-radius: 24px; background: #7A2634; border: 2px dashed #E8B93B; display: flex; align-items: center; justify-content: center; text-align: center; padding: 24px; box-sizing: border-box; color: #F6F3EC; font-size: 20px">[Replace with ITUM student photo: studying on laptop or phone]</div>
-</div>
-</div>
-<div id="resources" style="max-width: 1200px; margin: 0 auto; padding: 72px 32px 24px">
-<h2 style="margin: 0 0 32px; font-family: 'DM Serif Display', serif; font-weight: 400; font-size: 44px">What is new</h2>
-<div style="display: flex; flex-wrap: wrap; gap: 24px">
-<div style="flex: 1 1 280px; background: #FFFFFF; border-radius: 20px; padding: 32px; display: flex; flex-direction: column; gap: 12px">
-<div style="font-size: 24px; font-weight: 700">E-books and e-textbooks</div>
-<div style="font-size: 18px; line-height: 1.5; color: #3A4A5E">Read course materials on any device and save on textbook costs.</div>
-</div>
-<div style="flex: 1 1 280px; background: #FFFFFF; border-radius: 20px; padding: 32px; display: flex; flex-direction: column; gap: 12px">
-<div style="font-size: 24px; font-weight: 700">Journals and databases</div>
-<div style="font-size: 18px; line-height: 1.5; color: #3A4A5E">Find credible sources in seconds for stronger assignments.</div>
-</div>
-<div style="flex: 1 1 280px; background: #FFFFFF; border-radius: 20px; padding: 32px; display: flex; flex-direction: column; gap: 12px">
-<div style="font-size: 24px; font-weight: 700">Remote access</div>
-<div style="font-size: 18px; line-height: 1.5; color: #3A4A5E">Log in from home, a café or the dorm. No queues, no waiting.</div>
-</div>
-</div>
-</div>
-<div style="max-width: 1200px; margin: 0 auto; padding: 48px 32px">
-<h2 style="margin: 0 0 32px; font-family: 'DM Serif Display', serif; font-weight: 400; font-size: 44px">Start in 3 steps</h2>
-<div style="display: flex; flex-wrap: wrap; gap: 24px; font-size: 20px; line-height: 1.4">
-<div style="flex: 1 1 240px"><div style="font-size: 40px; font-weight: 700; color: #B8791A">1</div>Open the library portal</div>
-<div style="flex: 1 1 240px"><div style="font-size: 40px; font-weight: 700; color: #B8791A">2</div>Log in with your student ID</div>
-<div style="flex: 1 1 240px"><div style="font-size: 40px; font-weight: 700; color: #B8791A">3</div>Search, read and download</div>
+<svg viewBox="0 0 420 380" role="img" aria-label="Illustration of a phone showing the digital library with books floating around it">
+<circle cx="215" cy="190" r="165" fill="#7a2840"/>
+<g class="float">
+<rect x="130" y="40" width="170" height="310" rx="26" fill="#1d1a1c"/>
+<rect x="140" y="56" width="150" height="278" rx="16" fill="#f3f5f9"/>
+<rect x="140" y="56" width="150" height="48" rx="16" fill="#5c1a2e"/>
+<rect x="152" y="72" width="70" height="8" rx="4" fill="#f0b429"/>
+<rect x="152" y="116" width="126" height="26" rx="13" fill="#fff" stroke="#dfe3ec"/>
+<circle cx="266" cy="129" r="6" fill="none" stroke="#5c1a2e" stroke-width="2"/>
+<g><rect x="152" y="158" width="36" height="52" rx="4" fill="#5c1a2e"/><rect x="194" y="158" width="36" height="52" rx="4" fill="#f0b429"/><rect x="236" y="158" width="36" height="52" rx="4" fill="#3d6b8f"/></g>
+<rect x="152" y="222" width="120" height="8" rx="4" fill="#cfd5e2"/><rect x="152" y="238" width="90" height="8" rx="4" fill="#cfd5e2"/>
+<rect x="152" y="268" width="126" height="34" rx="17" fill="#f0b429"/>
+<rect x="176" y="282" width="78" height="7" rx="3.500" fill="#3d0f1e"/>
+</g>
+<g transform="rotate(-14 80 110)"><rect x="50" y="80" width="64" height="84" rx="6" fill="#f0b429"/><rect x="58" y="92" width="38" height="6" rx="3" fill="#3d0f1e"/><rect x="58" y="106" width="28" height="6" rx="3" fill="#3d0f1e" opacity=".6"/></g>
+<g transform="rotate(12 350 90)"><rect x="318" y="60" width="64" height="84" rx="6" fill="#fff"/><rect x="326" y="72" width="38" height="6" rx="3" fill="#5c1a2e"/><rect x="326" y="86" width="28" height="6" rx="3" fill="#5c1a2e" opacity=".5"/></g>
+<g transform="rotate(8 345 290)"><rect x="315" y="255" width="70" height="90" rx="6" fill="#3d6b8f"/><circle cx="350" cy="292" r="14" fill="#f3f5f9"/></g>
+<g transform="rotate(-8 75 295)"><rect x="42" y="262" width="66" height="86" rx="6" fill="#f3f5f9"/><rect x="52" y="276" width="40" height="6" rx="3" fill="#5c1a2e"/><rect x="52" y="290" width="26" height="6" rx="3" fill="#5c1a2e" opacity=".5"/></g>
+</svg>
 </div>
 </div>
-<div style="max-width: 1200px; margin: 0 auto; padding: 24px 32px 72px">
-<div style="background: #5C1A24; color: #F6F3EC; border-radius: 24px; padding: 48px; display: flex; flex-wrap: wrap; gap: 24px; justify-content: space-between; align-items: center">
-<div style="flex: 1 1 360px">
-<div style="font-family: 'DM Serif Display', serif; font-size: 36px; margin-bottom: 8px">New to digital resources?</div>
-<div style="font-size: 20px; color: #EBD9DC">Join our free 15-minute Quick Start online session this week.</div>
+
+<div class="stats">
+<div class="wrap"><ul>
+<li><b>10,000+</b>e-books and e-journals</li>
+<li><b>24/7</b>access from anywhere</li>
+<li><b>Free</b>for registered students</li>
+<li><b>1 login</b>with your student ID</li>
+</ul></div>
 </div>
-<a href="#resources" style="background: #E8B93B; color: #5C1A24; font-size: 20px; font-weight: 700; padding: 18px 32px; border-radius: 12px; text-decoration: none">Join a Quick Start Session</a>
+
+<section id="resources">
+<div class="wrap">
+<h2>What you can open today</h2>
+<p class="lead">Everything you need for assignments, research and exam revision, in one place.</p>
+<div class="grid">
+<div class="card"><svg viewBox="0 0 44 44" aria-hidden="true"><rect x="8" y="5" width="28" height="34" rx="3" fill="#5c1a2e"/><rect x="13" y="12" width="18" height="3" rx="1.500" fill="#f0b429"/><rect x="13" y="19" width="12" height="3" rx="1.500" fill="#f0b429" opacity=".6"/></svg><h3>E-books</h3><p>Core textbooks and reference books you can read on your phone, no queue and no due date stress.</p></div>
+<div class="card"><svg viewBox="0 0 44 44" aria-hidden="true"><rect x="6" y="8" width="32" height="28" rx="3" fill="#3d6b8f"/><path d="M12 28l7-8 5 5 8-10" stroke="#fff" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg><h3>E-journals and databases</h3><p>Research papers for your final-year project and literature reviews, searchable by topic.</p></div>
+<div class="card"><svg viewBox="0 0 44 44" aria-hidden="true"><rect x="9" y="5" width="26" height="34" rx="3" fill="#f0b429"/><path d="M15 16h14M15 22h14M15 28h8" stroke="#3d0f1e" stroke-width="3" stroke-linecap="round"/></svg><h3>Past papers</h3><p>Practise with previous exam papers before the exam week begins.</p></div>
+<div class="card"><svg viewBox="0 0 44 44" aria-hidden="true"><circle cx="22" cy="22" r="16" fill="#5c1a2e"/><path d="M22 12v11l7 4" stroke="#f0b429" stroke-width="3" fill="none" stroke-linecap="round"/></svg><h3>Open all day and night</h3><p>Study from home, the hostel or the bus. The Digital Library never closes.</p></div>
 </div>
 </div>
-<div style="border-top: 1px solid #D8D2C4; padding: 32px; text-align: center; font-size: 16px; color: #3A4A5E">ITUM Library · itum.mrt.ac.lk/library · [email] · [phone] · Chat with a librarian</div>
+</section>
+
+<section class="steps" id="start">
+<div class="wrap">
+<h2>Start in three minutes</h2>
+<p class="lead">You do not need to visit the library to get set up.</p>
+<ol>
+<li><h3>Open the portal</h3><p>Go to the Digital Library website on your phone or laptop.</p></li>
+<li><h3>Log in</h3><p>Use your student ID (for example 23IT0470) and your university password.</p></li>
+<li><h3>Open your first resource</h3><p>Search your module name and open one e-book or e-journal.</p></li>
+</ol>
+<p style="margin-top:2rem"><a class="btn" href="https://www.lib.mrt.ac.lk" target="_blank" rel="noopener">Explore the Digital Library now</a></p>
 </div>
-</x-dc>
-<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":1500}}'>
-class Component extends DCLogic {
-renderVals() {
-return {};
-}
-}
+</section>
+
+<section class="orient" id="orientation">
+<div class="wrap">
+<svg viewBox="0 0 400 320" role="img" aria-label="Illustration of a student studying with a laptop and books">
+<rect x="10" y="30" width="380" height="260" rx="24" fill="#f3f5f9"/>
+<rect x="30" y="50" width="340" height="14" rx="3" fill="#5c1a2e"/>
+<g><rect x="45" y="68" width="22" height="70" fill="#5c1a2e"/><rect x="70" y="78" width="18" height="60" fill="#f0b429"/><rect x="91" y="64" width="24" height="74" fill="#3d6b8f"/><rect x="118" y="82" width="16" height="56" fill="#7a2840"/></g>
+<rect x="30" y="138" width="130" height="6" fill="#5c1a2e"/>
+<circle cx="260" cy="132" r="26" fill="#d9a37c"/>
+<path d="M232 128c0-22 56-22 56 0-10-8-46-8-56 0z" fill="#1d1a1c"/>
+<path d="M222 215c0-40 76-40 76 0v35h-76z" fill="#3d6b8f"/>
+<rect x="190" y="205" width="140" height="12" rx="4" fill="#8a8f9c"/>
+<path d="M205 205l12-55h86l12 55z" fill="#1d1a1c"/>
+<rect x="222" y="160" width="62" height="6" rx="3" fill="#f0b429"/><rect x="222" y="174" width="40" height="6" rx="3" fill="#f0b429" opacity=".6"/>
+<rect x="150" y="250" width="200" height="10" rx="3" fill="#5c1a2e"/>
+</svg>
+<div>
+<h2>Join a 15-minute orientation</h2>
+<p class="lead" style="margin-bottom:0">Learn the best search tricks and enter the draw to win a free printing credit voucher.</p>
+<form id="f">
+<div><label for="n">First name</label><input id="n" required autocomplete="given-name"></div>
+<div><label for="e">University email</label><input id="e" type="email" required autocomplete="email" placeholder="you@uom.lk"></div>
+<div><label for="y">Your year</label><select id="y"><option>First year</option><option>Second year</option><option>Third year</option><option>Final year</option></select></div>
+<button class="btn" type="submit">Reserve my seat</button>
+</form>
+<div id="ok" role="status"></div>
+<p class="note">Demo form for the practical. No data is sent anywhere.</p>
+</div>
+</div>
+</section>
+</main>
+
+<footer id="contact">
+<div class="wrap">
+<div><strong style="font-family:var(--head)">ITUM Library</strong><p>Institute of Technology, University of Moratuwa</p></div>
+<div><p>library@uom.lk</p><p>www.lib.mrt.ac.lk</p></div>
+<div><p>Digital Marketing practical | Group 10</p></div>
+</div>
+</footer>
+
+<script>
+document.getElementById('f').addEventListener('submit',function(e){
+e.preventDefault();
+var o=document.getElementById('ok');
+o.textContent='You are in, '+document.getElementById('n').value+'! Check your email for the orientation time.';
+o.style.display='block';this.reset();
+});
 </script>
 </body>
 </html>
